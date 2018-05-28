@@ -1,0 +1,7 @@
+{
+  "tspegjs": {
+    "noTslint": false,
+    "tslintIgnores": "quotemark",
+    "customHeader": "/* tslint:disable */ \r\n import * as astQls from '../app/domain/ast/qls/index';\n\r import {IntQuestionType, BooleanQuestionType, StringQuestionType, DateQuestionType} from '../app/domain/ast/question-type'"
+  }
+}

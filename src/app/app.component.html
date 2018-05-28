@@ -1,0 +1,45 @@
+<h1>Welcome to our spectacular QL parser!</h1>
+
+<div class="page-container">
+  <div class="input">
+    <button (click)="prefillForm()" id="prefill-button">Prefill</button>
+    <span class="header">Input QL</span>
+
+    <span id="error-message" *ngIf="errorMessage" class="error"> {{errorMessage}}</span>
+
+    <textarea id="inputQl" rows="25" cols="70" [(ngModel)]="inputQl"></textarea><br />
+    <span class="header">Input QLS</span>
+    <textarea id="inputQls" rows="25" cols="70" [(ngModel)]="inputQls"></textarea>
+
+    <button id="parse-button" (click)="parseInput()">Parse</button>
+
+  </div>
+
+  <div *ngIf="form" class="form">
+    <span class="header">{{formName}}</span>
+    <form id="form" (ngSubmit)="onSubmit()" [formGroup]="form">
+
+      <app-styled-form-content *ngIf="qlsStylesheet; else unstyledquestions"
+                               [styles]="qlsStylesheet" [questions]="questions" [form]="form">
+
+      </app-styled-form-content>
+
+      <ng-template #unstyledquestions>
+        <div class="form-row" *ngFor="let question of questions">
+          <app-question [question]="question" [form]="form"></app-question>
+        </div>
+      </ng-template>
+
+
+      <div class="form-row">
+        <button id="form-submit" type="submit">Save</button>
+      </div>
+    </form>
+
+    <div *ngIf="payload" class="form-row">
+      <strong>Saved the following values</strong><br>{{payload | json}}
+    </div>
+  </div>
+</div>
+
+

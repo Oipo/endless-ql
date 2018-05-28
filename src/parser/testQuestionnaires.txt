@@ -1,0 +1,83 @@
+// simple form
+form form {
+ 	question: "Question?"  boolean
+}
+
+//with all question types
+
+form form {
+  question1: "IntegerQuestion?"  integer
+  question2: "DecimalQuestion?"  decimal
+  question4: "BooleanQuestion?"  boolean
+  question5: "StringQuestion?"  string
+ 	question6: "DateQuestion?"  date
+}
+
+//invalid form
+form form {
+ 	question: "Question?"  invalidType
+}
+
+//valid form with if question
+form form {
+  question1: "IntegerQuestion?"  integer
+  question2: "DecimalQuestion?"  integer
+  question3: "BooleanQuestion?"  boolean
+  question4: "StringQuestion?"  string
+  question5: "DateQuestion?"  date
+  if (question3) {
+    question6: "ifQuestion" integer
+  }
+}
+
+//duplicate identifier form
+form form {
+   question1: "IntegerQuestion?"  integer
+   question2: "DecimalQuestion?"  decimal
+   question4: "BooleanQuestion?"  boolean
+   question5: "StringQuestion?"  string
+   question5: "StringQuestion?"  string
+   question6: "DateQuestion?"  date
+   if (question4) {
+     question7: "ifQuestion" integer
+   }
+ }
+
+//type error form
+form form {
+  question1: "IntegerQuestion?"  integer
+  question2: "BooleanQuestion?"  boolean
+  question3: "StringQuestion?"  string
+  question4: "DateQuestion?"  date
+  if (question4) {
+    question5: "ifQuestion" integer
+  }
+}
+
+//calculated value form
+form form {
+ q1: "test" integer
+ q2: "t3" integer = (2 * 3 + 4)
+}
+
+//calculated value form with wrongly typed boolean condition
+form form {
+ q1: "test" integer
+ q2: "t3" integer = -2 + 4 && 3
+}
+
+//calculated value form with variable dependency
+form form {
+   salaryQuestion: "What do you earn in an hour?" integer
+   workHourQuestion: "How many hours do you work in a week?" integer
+   weeklyEarnings: "In a week you earn:" integer = salaryQuestion * workHourQuestion
+   monthlyEarnings: "In a month you earn:" integer = weeklyEarnings * 4
+   holidaySalary: "Do you get holiday money?" boolean
+   if (holidaySalary) {
+      yearlyEarnings: "In a year you earn: " integer = monthlyEarnings * 12 + monthlyEarnings
+   } else {
+      yearlyEarnings2: "in a year you earn: " integer = monthlyEarnings * 12
+   }
+
+   salaryMoreThanAverage: "Your salary bigger than average" boolean = yearlyEarnings > 30000 || yearlyEarnings2 > 30000
+}

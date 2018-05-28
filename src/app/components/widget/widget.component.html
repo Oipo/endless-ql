@@ -1,0 +1,28 @@
+<form [formGroup]="form" *ngIf="question.hiddenCondition(form)">
+
+  <label [for]="question.key">{{question.label}}</label>
+
+  <div [ngSwitch]="question.widget.type">
+    <mat-form-field *ngSwitchCase="3">
+      <input [id]="question.key" matInput [formControl]="control" [type]="question.type" >
+    </mat-form-field>
+
+    <mat-checkbox *ngSwitchCase="4" [formControl]="control"></mat-checkbox>
+
+    <mat-radio-group *ngSwitchCase="2" [formControl]="control">
+      <mat-radio-button *ngFor="let label of widget.labels" [value]="label">{{label}}</mat-radio-button>
+    </mat-radio-group>
+
+    <mat-form-field *ngSwitchCase="6">
+      <mat-select [formControl]="control" [(value)]="selected">
+        <mat-option *ngFor="let label of widget.labels" [value]="label">{{label}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngSwitchCase="5">
+      <input [id]="question.key" matInput [formControl]="control" type="number" (change)="onNumberChange(question, $event)">
+    </mat-form-field>
+
+    <mat-slider *ngSwitchCase="7" [formControl]="control" type="range" [value]="question.value" (change)="onNumberChange(question, $event)"></mat-slider>
+  </div>
+</form>

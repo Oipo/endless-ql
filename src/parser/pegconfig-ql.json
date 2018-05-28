@@ -1,0 +1,7 @@
+{
+  "tspegjs": {
+    "noTslint": false,
+    "tslintIgnores": "quotemark",
+    "customHeader": "/* tslint:disable */ \r\n import * as ast from '../app/domain/ast/ql';"
+  }
+}
