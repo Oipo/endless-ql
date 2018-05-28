@@ -1,28 +1,21 @@
-<form [formGroup]="form" *ngIf="question.hiddenCondition(form)">
-
-  <label [for]="question.key">{{question.label}}</label>
+<form [formGroup]="form" *ngIf="question.hiddenCondition(form) && question">
 
   <div [ngSwitch]="question.widget.type">
-    <mat-form-field *ngSwitchCase="3">
-      <input [id]="question.key" matInput [formControl]="control" [type]="question.type" >
-    </mat-form-field>
+    <app-text-widget *ngSwitchCase="3"[control]="control" [styles]="question.style" [label]="question.key"
+    [type]="question.type"></app-text-widget>
 
-    <mat-checkbox *ngSwitchCase="4" [formControl]="control"></mat-checkbox>
+    <app-checkbox-widget *ngSwitchCase="4" [control]="control" [styles]="question.style" [label]="question.key"></app-checkbox-widget>
 
-    <mat-radio-group *ngSwitchCase="2" [formControl]="control">
-      <mat-radio-button *ngFor="let label of widget.labels" [value]="label">{{label}}</mat-radio-button>
-    </mat-radio-group>
+    <app-radio-widget *ngSwitchCase="2"
+                      [control]="control" [styles]="question.style" [questionLabel]="question.key" [optionLabels]="question.widget.labels">
+    </app-radio-widget>
 
-    <mat-form-field *ngSwitchCase="6">
-      <mat-select [formControl]="control" [(value)]="selected">
-        <mat-option *ngFor="let label of widget.labels" [value]="label">{{label}}</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <app-select-widget *ngSwitchCase="6"
+                       [control]="control" [styles]="question.style" [questionLabel]="question.key" [optionLabels]="question.widget.labels">
+    </app-select-widget>
 
-    <mat-form-field *ngSwitchCase="5">
-      <input [id]="question.key" matInput [formControl]="control" type="number" (change)="onNumberChange(question, $event)">
-    </mat-form-field>
+    <app-spinbox-widget *ngSwitchCase="5" [control]="control" [styles]="question.style" [label]="question.key"></app-spinbox-widget>
 
-    <mat-slider *ngSwitchCase="7" [formControl]="control" type="range" [value]="question.value" (change)="onNumberChange(question, $event)"></mat-slider>
+    <app-slider-widget *ngSwitchCase="7" [control]="control" [styles]="question.style" [label]="question.key"></app-slider-widget>
   </div>
 </form>

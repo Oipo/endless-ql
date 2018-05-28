@@ -1,0 +1,8 @@
+<div *ngIf="questionLabel" [ngStyle]="styles">
+  <mat-form-field [ngStyle]="styles">
+    <mat-label [ngStyle]="styles">{{questionLabel}}</mat-label>
+    <mat-select [formControl]="control" [(value)]="selected">
+      <mat-option *ngFor="let label of optionLabels" [value]="label.value" [ngStyle]="styles">{{label.label}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

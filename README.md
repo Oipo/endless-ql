@@ -4,6 +4,34 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Please remember to always run `npm install` before running the code to ensure you're working with the latest specified tools, libraries and frameworks.
 
+Advised to run in Chrome.
+
+
+## Features
+This application is an interpreter for QL and QLS. 
+
+###QL functionality:
+
+- Parsing a form with if/if-else statements, questions and expression question
+- supported data types: integer, string, date, boolean
+- boolean questions are shown as checkboxes, other questions are shown as inputs.
+- includes evaluation of expressions, supported:
+
+| | Number | Boolean | String | Date |
+| --- | --- | --- | --- | --- |
+| Number | + - / * | Error | Error | Error |
+| Boolean | Error | &#124;&#124; &amp;&amp; | Error | Error |
+| String | Error | Error | + | Error |
+| Date | + - | Error | Error | Error |
+
+- outputs the submitted form as a json file
+
+###QLS functionality:
+- Parsing a stylesheet with pages, sections, and sections in sections
+- Adding default styling to question from the definition in the closest scope (page or section)
+- Adding CSS styling to questions / widgets
+- overriding widget types for questions
+
 ## Development
 
 Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.

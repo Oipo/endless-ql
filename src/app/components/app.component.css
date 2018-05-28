@@ -1,0 +1,50 @@
+h1 {
+  font-family: Arial sans-serif;
+}
+
+form {
+  width: 100%;
+  padding: 8px;
+}
+
+.page-container{
+  display: flex;
+  flex-direction: row;
+  font-family: Arial sans-serif;
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  align-items: center;
+}
+
+.header {
+  font-size: larger;
+}
+
+.form-row {
+  padding-top: 8px;
+}
+
+.error {
+  color: red;
+  font-size: large;
+  margin-bottom: 16px;
+}
+
+button {
+  margin: 16px 0;
+  background: cornflowerblue;
+  border: royalblue;
+  border-radius: 2px;
+  padding: 8px;
+  cursor: pointer;
+}

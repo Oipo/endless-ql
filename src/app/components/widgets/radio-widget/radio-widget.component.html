@@ -1,0 +1,9 @@
+<div *ngIf="questionLabel" [ngStyle]="styles">
+  <mat-radio-group [formControl]="control">
+    <mat-label>{{questionLabel}}</mat-label>
+    <mat-radio-button *ngFor="let label of optionLabels" [value]="label.value">
+      {{label.label}}
+    </mat-radio-button>
+  </mat-radio-group>
+</div>
+

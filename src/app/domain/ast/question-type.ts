@@ -6,6 +6,7 @@ export interface QuestionType<T> {
   getDefaultValue(): T;
   isCompatibleWithExpression(type: ExpressionType): boolean;
   isCompatibleWithWidget(type: WidgetType): boolean;
+  getCompatibleWidgetTypes(): string;
   toExpressionType(): ExpressionType;
   toHtmlInputType(): string;
 }
@@ -34,6 +35,10 @@ export class IntQuestionType implements QuestionType<number> {
   toHtmlInputType(): string {
     return 'number';
   }
+
+  getCompatibleWidgetTypes(): string {
+    return 'text, slider, spinbox';
+  }
 }
 
 export class BooleanQuestionType implements QuestionType<boolean> {
@@ -61,6 +66,10 @@ export class BooleanQuestionType implements QuestionType<boolean> {
   toHtmlInputType(): string {
     return 'boolean';
   }
+
+  getCompatibleWidgetTypes(): string {
+    return 'checkbox, radio, dropdown';
+  }
 }
 
 export class StringQuestionType implements QuestionType<string> {
@@ -85,6 +94,10 @@ export class StringQuestionType implements QuestionType<string> {
   }
 
   toHtmlInputType(): string {
+    return 'text';
+  }
+
+  getCompatibleWidgetTypes(): string {
     return 'text';
   }
 }
@@ -112,5 +125,9 @@ export class DateQuestionType implements QuestionType<Date> {
 
   toHtmlInputType(): string {
     return 'date';
+  }
+
+  getCompatibleWidgetTypes(): string {
+    return 'text';
   }
 }

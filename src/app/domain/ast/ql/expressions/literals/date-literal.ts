@@ -1,12 +1,16 @@
 import {Location} from '../../../location';
-import {QlQuestion} from '../../ql-question';
 import {ExpressionType} from '../expression-type';
 import {ExpressionVisitor} from '../../visitors/expression-visitor';
 import {Literal} from './literal';
 import {BooleanLiteral} from './boolean-literal';
+import {NumberLiteral} from './number-literal';
 
 export class DateLiteral extends Literal {
-  constructor(public value: Date, location: Location) {
+  private static HOURS_IN_A_DAY = 24;
+  private static SECOND_MINUTE_MULTIPLIER = 60;
+  private static MILLISECONDS_TO_SECONDS = 1000;
+
+  constructor(public readonly value: Date, readonly location: Location) {
     super(location);
   }
 
@@ -14,7 +18,7 @@ export class DateLiteral extends Literal {
     return this.value;
   }
 
-  checkType(allQuestions: QlQuestion[]): ExpressionType {
+  getType(): ExpressionType {
     return ExpressionType.DATE;
   }
 
@@ -28,8 +32,10 @@ export class DateLiteral extends Literal {
     return literal.addDate(this);
   }
 
-  addDate(literal: DateLiteral): Literal {
-    return new DateLiteral(new Date(this.value.getDate() + literal.value.getDate()), this.location);
+  addNumber(literal: NumberLiteral): Literal {
+    // add days equal to value
+    return new DateLiteral(new Date(this.value.getTime() +
+      this.milisecondsToDays(literal.value)), this.location);
   }
 
   subtract(literal: Literal): Literal {
@@ -37,7 +43,12 @@ export class DateLiteral extends Literal {
   }
 
   subtractDate(literal: DateLiteral): Literal {
-    return new DateLiteral(new Date(this.value.getDate() - literal.value.getDate()), this.location);
+    return new DateLiteral(new Date(this.value.getTime() - literal.value.getTime()), this.location);
+  }
+
+  subtractNumber(literal: NumberLiteral): Literal {
+    // add days equal to value
+    return new DateLiteral(new Date(this.value.getTime() - this.milisecondsToDays(literal.value)), this.location);
   }
 
   // boolean ops
@@ -88,5 +99,10 @@ export class DateLiteral extends Literal {
 
   lesserThanEqualsDate(literal: DateLiteral): Literal {
     return new BooleanLiteral(this.value <= literal.value, this.location);
+  }
+
+  private milisecondsToDays(miliseconds: number): number {
+    return (DateLiteral.MILLISECONDS_TO_SECONDS * DateLiteral.SECOND_MINUTE_MULTIPLIER *
+      DateLiteral.SECOND_MINUTE_MULTIPLIER * DateLiteral.HOURS_IN_A_DAY) * miliseconds;
   }
 }

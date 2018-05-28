@@ -10,7 +10,7 @@ describe('FormQuestionComponent', () => {
   const question = new InputQuestion('question',
     'textboxquestion',
     undefined,
-    'text', undefined);
+    'text', () => true);
 
   const controls = {};
   controls['question'] = new FormControl({value: ''});

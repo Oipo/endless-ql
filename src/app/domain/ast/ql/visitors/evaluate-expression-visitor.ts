@@ -16,13 +16,15 @@ import {DateLiteral} from '../expressions/literals/date-literal';
 import {FormGroup} from '@angular/forms';
 import {Expression} from '../';
 import {UnknownQuestionError} from '../../../errors';
+import {locationToReadableMessage} from '../../location';
+import {VariableToLiteralFactory} from '../../../../factories/variable-to-literal-factory';
 
 export class EvaluateExpressionVisitor implements ExpressionVisitor<Literal> {
   constructor(private readonly form: FormGroup) { }
 
-  static evaluate(form: FormGroup, expr: Expression): Literal {
+  static visit(form: FormGroup, expression: Expression): Literal {
     const visitor = new EvaluateExpressionVisitor(form);
-    return expr.accept(visitor);
+    return expression.accept(visitor);
   }
 
   visitBooleanLiteral(literal: BooleanLiteral): Literal {
@@ -41,75 +43,80 @@ export class EvaluateExpressionVisitor implements ExpressionVisitor<Literal> {
     return literal;
   }
 
-  visitMultiplyExpression(expr: MultiplyExpression): Literal {
-    return expr.right.accept(this).multiply(expr.left.accept(this));
+  visitMultiplyExpression(expression: MultiplyExpression): Literal {
+    return expression.right.accept(this).multiply(expression.left.accept(this));
   }
 
-  visitDivideExpression(expr: DivideExpression): Literal {
-    return expr.right.accept(this).divide(expr.left.accept(this));
+  visitDivideExpression(expression: DivideExpression): Literal {
+    return expression.right.accept(this).divide(expression.left.accept(this));
   }
 
-  visitAddExpression(expr: AddExpression): Literal {
-    return expr.right.accept(this).add(expr.left.accept(this));
+  visitAddExpression(expression: AddExpression): Literal {
+    return expression.right.accept(this).add(expression.left.accept(this));
   }
 
-  visitSubtractExpression(expr: SubtractExpression): Literal {
-    return expr.right.accept(this).subtract(expr.left.accept(this));
+  visitSubtractExpression(expression: SubtractExpression): Literal {
+    return expression.right.accept(this).subtract(expression.left.accept(this));
   }
 
-  visitGreaterThanExpression(expr: GreaterThanExpression): Literal {
-    return expr.right.accept(this).greaterThan(expr.left.accept(this));
+  visitGreaterThanExpression(expression: GreaterThanExpression): Literal {
+    return expression.right.accept(this).greaterThan(expression.left.accept(this));
   }
 
-  visitGreaterThanEqualExpression(expr: GreaterThanEqualExpression): Literal {
-    return expr.right.accept(this).greaterThanEquals(expr.left.accept(this));
+  visitGreaterThanEqualExpression(expression: GreaterThanEqualExpression): Literal {
+    return expression.right.accept(this).greaterThanEquals(expression.left.accept(this));
   }
 
-  visitLessThanExpression(expr: LessThanExpression): Literal {
-    return expr.right.accept(this).lesserThan(expr.left.accept(this));
+  visitLessThanExpression(expression: LessThanExpression): Literal {
+    return expression.right.accept(this).lesserThan(expression.left.accept(this));
   }
 
-  visitLessThanEqualExpression(expr: LessThanEqualExpression): Literal {
-    return expr.right.accept(this).lesserThanEquals(expr.left.accept(this));
+  visitLessThanEqualExpression(expression: LessThanEqualExpression): Literal {
+    return expression.right.accept(this).lesserThanEquals(expression.left.accept(this));
   }
 
-  visitEqualExpression(expr: EqualExpression): Literal {
-    return expr.right.accept(this).equals(expr.left.accept(this));
+  visitEqualExpression(expression: EqualExpression): Literal {
+    return expression.right.accept(this).equals(expression.left.accept(this));
   }
 
-  visitUnequalExpression(expr: UnequalExpression): Literal {
-    return expr.right.accept(this).notEquals(expr.left.accept(this));
+  visitUnequalExpression(expression: UnequalExpression): Literal {
+    return expression.right.accept(this).notEquals(expression.left.accept(this));
   }
 
-  visitAndExpression(expr: AndExpression): Literal {
-    return expr.right.accept(this).and(expr.left.accept(this));
+  visitAndExpression(expression: AndExpression): Literal {
+    return expression.right.accept(this).and(expression.left.accept(this));
   }
 
-  visitOrExpression(expr: OrExpression): Literal {
-    return expr.right.accept(this).or(expr.left.accept(this));
+  visitOrExpression(expression: OrExpression): Literal {
+    return expression.right.accept(this).or(expression.left.accept(this));
   }
 
-  visitNegativeExpression(expr: NegativeExpression): Literal {
-    return expr.right.accept(this).negative();
+  visitNegativeExpression(expression: NegativeExpression): Literal {
+    return expression.right.accept(this).negative();
   }
 
-  visitNegateExpression(expr: NegateExpression): Literal {
-    return expr.right.accept(this).negation();
+  visitNegateExpression(expression: NegateExpression): Literal {
+    return expression.right.accept(this).negation();
   }
 
-  visitVariable(expr: Variable): Literal {
-    const referencedControl = this.form.controls[expr.identifier];
+  visitVariable(expression: Variable): Literal {
+    const referencedControl = this.form.controls[expression.identifier];
+
     if (referencedControl) {
       /* Angular sets the value for a form control with undefined as value to an object {value: ""}
          If there is a value, instead of the object there will be a value, which means value.value is undefined */
-      if (referencedControl.value.value === undefined) {
-        return new NumberLiteral(referencedControl.value, expr.location);
+
+      if ( referencedControl.value !== null && referencedControl.value.value === undefined) {
+        return VariableToLiteralFactory.toLiteral(expression, referencedControl.value);
       }
 
-      return new NumberLiteral(undefined, expr.location);
+      // Unknown literal
+      return new NumberLiteral(undefined, expression.location);
+    } else if (referencedControl.value === null) {
+      return new NumberLiteral(undefined, expression.location);
     } else {
-      throw new UnknownQuestionError(`Question for identifier ${expr.identifier} could not be found`
-        + expr.getLocationErrorMessage());
+      throw new UnknownQuestionError(`Question for identifier ${expression.identifier} could not be found`
+        + locationToReadableMessage(expression.location));
     }
   }
 }

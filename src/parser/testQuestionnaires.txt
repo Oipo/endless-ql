@@ -1,6 +1,19 @@
+form form {
+    question1: "IntegerQuestion?"  integer = 5
+    question2: "IntegerQuestion?"  integer = question1 + 5
+    question3: "BooleanQuestion?"  boolean = question1 > 10
+    question4: "StringQuestion?"  string = "test"
+    question5: "DateQuestion?"  date = 01-01-1989
+    if (question3) {
+      question6: "ifQuestion" integer
+    }
+  }
+
 // simple form
 form form {
- 	question: "Question?"  boolean
+ 	question1: "Question?"  boolean
+ 	question2: "How much do you earn per hour?" integer
+ 	question3: "weekly rate for 40 hour week" boolean = !question1
 }
 
 //with all question types

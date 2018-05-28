@@ -5,11 +5,9 @@
     </ng-template>
     <mat-list>
       <div *ngFor="let section of page.sections">
-        <h3 mat-subheader>{{section.name}}</h3>
-        <mat-list-item *ngFor="let question of getSectionQuestions(section, page.defaultSettings)" class="form-row">
-          <app-widget [question]="question" [form]="form" ></app-widget>
-        </mat-list-item>
-        <mat-divider></mat-divider>
+        <app-styled-form-section [section]="section" [styledQuestionsMap]="qlsToQlQuestionDictionary" [form]="form">
+
+        </app-styled-form-section>
       </div>
     </mat-list>
   </mat-tab>

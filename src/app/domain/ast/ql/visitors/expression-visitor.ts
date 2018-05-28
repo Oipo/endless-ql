@@ -21,33 +21,33 @@ export interface ExpressionVisitor<T> {
 
   visitDateLiteral(literal: DateLiteral): T;
 
-  visitMultiplyExpression(expr: MultiplyExpression): T;
+  visitMultiplyExpression(expression: MultiplyExpression): T;
 
-  visitDivideExpression(expr: DivideExpression): T;
+  visitDivideExpression(expression: DivideExpression): T;
 
-  visitAddExpression(expr: AddExpression): T;
+  visitAddExpression(expression: AddExpression): T;
 
-  visitSubtractExpression(expr: SubtractExpression): T;
+  visitSubtractExpression(expression: SubtractExpression): T;
 
-  visitGreaterThanExpression(expr: GreaterThanExpression): T;
+  visitGreaterThanExpression(expression: GreaterThanExpression): T;
 
-  visitGreaterThanEqualExpression(expr: GreaterThanEqualExpression): T;
+  visitGreaterThanEqualExpression(expression: GreaterThanEqualExpression): T;
 
-  visitLessThanExpression(expr: LessThanExpression): T;
+  visitLessThanExpression(expression: LessThanExpression): T;
 
-  visitLessThanEqualExpression(expr: LessThanEqualExpression): T;
+  visitLessThanEqualExpression(expression: LessThanEqualExpression): T;
 
-  visitEqualExpression(expr: EqualExpression): T;
+  visitEqualExpression(expression: EqualExpression): T;
 
-  visitUnequalExpression(expr: UnequalExpression): T;
+  visitUnequalExpression(expression: UnequalExpression): T;
 
-  visitAndExpression(expr: AndExpression): T;
+  visitAndExpression(expression: AndExpression): T;
 
-  visitOrExpression(expr: OrExpression): T;
+  visitOrExpression(expression: OrExpression): T;
 
-  visitNegativeExpression(expr: NegativeExpression): T;
+  visitNegativeExpression(expression: NegativeExpression): T;
 
-  visitNegateExpression(expr: NegateExpression): T;
+  visitNegateExpression(expression: NegateExpression): T;
 
-  visitVariable(expr: Variable): T;
+  visitVariable(expression: Variable): T;
 }

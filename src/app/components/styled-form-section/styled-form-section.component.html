@@ -1,0 +1,15 @@
+<div *ngIf="section">
+  <h3 mat-subheader>{{section.name}}</h3>
+  <ng-container *ngFor="let question of getSectionQuestions()">
+    <mat-list-item *ngIf="question.hiddenCondition(form)">
+      <app-widget [question]="question" [form]="form" ></app-widget>
+    </mat-list-item>
+  </ng-container>
+
+  <mat-divider></mat-divider>
+
+  <ng-container *ngFor="let subsection of section.subSections">
+    <app-styled-form-section [section]="subsection" [styledQuestionsMap]="styledQuestionsMap" [form]="form">
+    </app-styled-form-section>
+  </ng-container>
+</div>

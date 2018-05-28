@@ -1,0 +1,7 @@
+<div *ngIf="label" [ngStyle]="styles">
+  <mat-form-field [ngStyle]="styles">
+    <mat-label [ngStyle]="styles">{{label}}</mat-label>
+    <input matInput [formControl]="control" type="number" (change)="onNumberChange($event)"
+           [ngStyle]="styles">
+  </mat-form-field>
+</div>

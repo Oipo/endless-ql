@@ -12,30 +12,53 @@ export class DynamicFormQuestionComponent implements OnInit {
   control: AbstractControl;
 
   get isInvalid() {
-    return this.form.controls[this.question.key].invalid;
+    return this.control.invalid;
   }
 
-  onCheckboxChange(question: QuestionBase<any>, event) {
-    this.form.controls[this.question.key].setValue(event.target.checked);
+  onCheckboxChange(event) {
+    this.control.setValue(event.target.checked);
   }
 
-  onTextboxChange(question: QuestionBase<any>, event) {
-    if (question.type === 'number') {
-      this.form.controls[this.question.key].setValue(parseInt(event.target.value, 10));
+  onTextboxChange(event) {
+    if (this.question.type === 'number') {
+      this.control.setValue(parseInt(event.target.value, 10));
     }
   }
 
   ngOnInit(): void {
     this.control = this.form.controls[this.question.key];
-    this.form.valueChanges.subscribe(() => {
-      if (this.question.readonly) {
-        // only recalculate new value if the control is an expressionQuestion, values are different and value is a valid value
-        const currentValue = this.control.value;
-        const newValue = this.question.calculateValue(this.form);
-        if (currentValue !== newValue && !Number.isNaN(newValue)) {
-          this.control.setValue(newValue);
-        }
+    this.updateValueIfChanged();
+
+    // only recalculate new value if the control is an expressionQuestion
+    if (this.question.readonly) {
+      this.form.valueChanges.subscribe(() => {
+        this.updateValueIfChanged();
+      });
+    }
+  }
+
+  private updateValueIfChanged(): void {
+    const currentValue = this.control.value;
+    let newValue = this.question.calculateValue(this.form);
+
+    // displaying of dates is in strings, so convert it.
+    if (newValue instanceof Date) {
+      const date: Date = (<Date>newValue);
+      newValue = (date.getMonth() + 1) + '-' + date.getDate() + '-' + date.getFullYear();
+    }
+
+    if (currentValue !== newValue) {
+      if (this.question.type === 'number' && typeof(newValue) === 'number' && (!Number.isNaN(newValue))) {
+        this.control.setValue(newValue);
+      } else if (this.question.type === 'boolean' && typeof(newValue) === 'boolean') {
+        this.question.value = newValue;
+        this.control.setValue(newValue);
+      } else if (this.question.type === 'text' && typeof(newValue) === 'string') {
+        this.control.setValue(newValue);
+      } else if (this.question.type === 'date' && typeof(newValue) === 'string') {
+        this.question.value = newValue;
+        this.control.setValue(newValue);
       }
-    });
+    }
   }
 }
