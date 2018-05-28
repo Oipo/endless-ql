@@ -10,7 +10,7 @@ Advised to run in Chrome.
 ## Features
 This application is an interpreter for QL and QLS. 
 
-###QL functionality:
+### QL functionality:
 
 - Parsing a form with if/if-else statements, questions and expression question
 - supported data types: integer, string, date, boolean
@@ -26,7 +26,7 @@ This application is an interpreter for QL and QLS.
 
 - outputs the submitted form as a json file
 
-###QLS functionality:
+### QLS functionality:
 - Parsing a stylesheet with pages, sections, and sections in sections
 - Adding default styling to question from the definition in the closest scope (page or section)
 - Adding CSS styling to questions / widgets
